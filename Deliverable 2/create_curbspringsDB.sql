@@ -1,11 +1,9 @@
 -- Drop old database if exists
 DROP SCHEMA IF EXISTS `CurbspringsDB`;
+
+-- Create the schema and use it
 CREATE SCHEMA `CurbspringsDB`;
 USE `CurbspringsDB`;
-
--- Create the database
-CREATE DATABASE CurbspringsDB;
-USE CurbspringsDB;
 
 -- Table: SpotOwner
 CREATE TABLE SpotOwner (
@@ -102,20 +100,16 @@ CREATE TABLE Review (
     FOREIGN KEY (spot_id) REFERENCES ParkingSpot(spot_id)
 );
 
-------------------------------------------------------------
--- TODO: Check the info beeing entered in the tables
-------------------------------------------------------------
-
 -- Populate tables with example data
 INSERT INTO SpotOwner VALUES
-(1, 'Θανάσης Τσαρναδέλης', 'tsarnadelis@gmail.com', '6f7ed1b31c53f78825239'),
-(2, 'Γιώργος Πίττης', 'pittis@outlook.com', '5417922f2aeb237ec72f7'),
-(3, 'Αλέξανδρος Φωτιάδης', 'fotiadis@yahoo.com', '6f7ed1b31c53f78825239'),
-(4, 'Θωμάς Καρανικιώτης', 'thomas@issel.com', 'eda71746c01c3f465ffd0'),
-(5, 'Γιώργος Σιαχάμης', 'giorgos@cyclopt.com', '5417922f2aeb237ec72f7'),
-(6, 'Γιώργος Στεργίου', 'geoster@gmail.com', '59cfdd99fab00c358f81f'),
-(7, 'Δημήτρης Παπαδόπουλος', 'papadodim@gmail.com', '88e1fbd99f5670ec4aaba'),
-(8, 'Φώτης Δημητρίου', 'fotis2014@yahoo.com', '3198acae4487cc5c9169e');
+(1, 'Θανάσης Τσαρναδέλης', 'tsarnadelis@gmail.com', '6f7ed1b31c53f788252395a08cc586e989d3ecf6a6611c82cba8b27c04f1e0a7'),
+(2, 'Γιώργος Πίττης', 'pittis@outlook.com', '5417922f2aeb237ec72f7d466610635a5d110f5f343ec0020e71f4b17f4d9931'),
+(3, 'Αλέξανδρος Φωτιάδης', 'fotiadis@yahoo.com', '6f7ed1b31c53f788252395a08cc586e989d3ecf6a6611c82cba8b27c04f1e0a7'),
+(4, 'Θωμάς Καρανικιώτης', 'thomas@issel.com', 'eda71746c01c3f465ffd02b6da15a6518e6fbc8f06f1ac525be193be5507069d'),
+(5, 'Γιώργος Σιαχάμης', 'giorgos@cyclopt.com', '5417922f2aeb237ec72f7d466610635a5d110f5f343ec0020e71f4b17f4d9931'),
+(6, 'Γιώργος Στεργίου', 'geoster@gmail.com', '59cfdd99fab00c358f81f7b8db69216e6a7ecaf896f3b21122b07481be9b6e71'),
+(7, 'Δημήτρης Παπαδόπουλος', 'papadodim@gmail.com', '88e1fbd99f5670ec4aabab3aa7797d8768667190e3d8ecd8645c949752598465'),
+(8, 'Φώτης Δημητρίου', 'fotis2014@yahoo.com', '3198acae4487cc5c9169ec9c310fae374e3b6b02adba27563d2d3c0baba1d34d');
 
 INSERT INTO ParkingSpot VALUES
 (1, 1, 'Εγνατίας 42', 'Open', 1, 1),
@@ -128,11 +122,11 @@ INSERT INTO ParkingSpot VALUES
 (8, 4, 'Ιασωνίδου 31', 'Underground', 1, 1);
 
 INSERT INTO User VALUES
-(1, 'Θανάσης Τσαρναδέλης', 'tsarnadelis@gmail.com', '6f7ed1b31c53f78825239'),
-(2, 'Γιώργος Πίττης', 'pittis@outlook.com', '5417922f2aeb237ec72f7'),
-(3, 'Αλέξανδρος Φωτιάδης', 'fotiadis@yahoo.com', '6f7ed1b31c53f78825239'),
-(4, 'Θωμάς Καρανικιώτης', 'thomas@issel.com', 'eda71746c01c3f465ffd0'),
-(5, 'Γιώργος Σιαχάμης', 'giorgos@cyclopt.com', '5417922f2aeb237ec72f7');
+(1, 'Θανάσης Τσαρναδέλης', 'tsarnadelis@gmail.com', '6f7ed1b31c53f788252395a08cc586e989d3ecf6a6611c82cba8b27c04f1e0a7'),
+(2, 'Γιώργος Πίττης', 'pittis@outlook.com', '5417922f2aeb237ec72f7d466610635a5d110f5f343ec0020e71f4b17f4d9931'),
+(3, 'Αλέξανδρος Φωτιάδης', 'fotiadis@yahoo.com', '6f7ed1b31c53f788252395a08cc586e989d3ecf6a6611c82cba8b27c04f1e0a7'),
+(4, 'Θωμάς Καρανικιώτης', 'thomas@issel.com', 'eda71746c01c3f465ffd02b6da15a6518e6fbc8f06f1ac525be193be5507069d'),
+(5, 'Γιώργος Σιαχάμης', 'giorgos@cyclopt.com', '5417922f2aeb237ec72f7d466610635a5d110f5f343ec0020e71f4b17f4d9931');
 
 INSERT INTO Vehicle VALUES
 ('ΚΒΧ5686', 'Car'),
@@ -181,4 +175,8 @@ INSERT INTO Review VALUES
 (2, 2, 4, '4', 'Καλή θέση αλλά ακριβή', '2024-11-21 16:45'),
 (3, 3, 2, '3', 'Δεν είχε καλή πρόσβαση', '2024-11-22 11:20'),
 (4, 4, 5, '5', 'Ιδανική τοποθεσία', '2024-11-23 10:40'),
-(5, 5, 1, '4', 'Πολύ ευρύχωρη θέση', '2024-11-24 15:15');
+(5, 5, 1, '4', 'Πολύ ευρύχωρη θέση', '2024-11-24 15:15'),
+(6, 5, 2, '4', 'Απομακρυσμένη τοποθεσία αλλά καλή τιμή', '2024-10-24 15:00'),
+(7, 4, 6, '5', 'Διαθέτει φορτιστή ηλεκτρικών οχημάτων', '2024-11-17 12:15'),
+(8, 3, 1, '2', 'Κακή εξυπηρέτηση', '2024-09-24 11:00');
+
