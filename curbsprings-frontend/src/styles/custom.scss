@@ -1,0 +1,20 @@
+// custom.scss
+
+// Override default colors
+$primary: #3d5a80;
+$secondary: #98c1d9;
+$tetriary: #e0fbfc;
+
+$font-family-base: 'Roboto', sans-serif;
+
+$display-font-sizes: (
+  1: 5rem,
+  2: 4.5rem,
+  3: 4rem,
+  4: 3.5rem,
+  5: 2rem,
+  6: 1.5rem
+);
+
+// Import Bootstrap
+@import "~bootstrap/scss/bootstrap";

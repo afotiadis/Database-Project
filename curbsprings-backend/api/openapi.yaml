@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: CurbspringsDB
+  description: API for managing parking spots and reservations.
+  version: 1.0.0
+servers:
+- url: http://localhost:3000
+  description: Local server
+paths:
+  /spot:
+    get:
+      summary: Get all parking spots
+      description: "Returns a list of parking spots, optionally filtered by attributes."
+      operationId: spotGET
+      responses:
+        "200":
+          description: A list of parking spots matching the filter criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Spot'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+  /spot/{id}:
+    get:
+      summary: Get a parking spot by ID
+      description: Retrieves details of a specific parking spot by its unique ID.
+      operationId: spotIdGET
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the parking spot to retrieve.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: The parking spot details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spot'
+        "404":
+          description: Parking spot not found.
+      x-swagger-router-controller: Default
+  /reservation:
+    get:
+      summary: Get all reservations
+      description: Returns a list of all reservations.
+      operationId: reservationGET
+      responses:
+        "200":
+          description: A list of reservations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+    post:
+      summary: Create a new reservation
+      description: Adds a new reservation to the system.
+      operationId: reservationPOST
+      requestBody:
+        description: Reservation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+        required: true
+      responses:
+        "201":
+          description: Reservation created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        "400":
+          description: Invalid input data.
+      x-swagger-router-controller: Default
+  /reservation/{id}:
+    get:
+      summary: Get a reservation by ID
+      description: Retrieves details of a specific reservation by its unique ID.
+      operationId: reservationIdGET
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the reservation to retrieve.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: The reservation details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        "404":
+          description: Reservation not found.
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    Spot:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the parking spot.
+          example: 1
+        address:
+          type: string
+          description: Address of the parking spot.
+          example: "123 Main St, Cityville"
+        type:
+          type: string
+          description: Type of the parking spot.
+          example: garage
+          enum:
+          - open
+          - garage
+          - underground
+        vehicle_type:
+          type: string
+          description: Type of vehicle supported by the spot.
+          example: car
+          enum:
+          - car
+          - truck
+          - motorcycle
+        charger:
+          type: boolean
+          description: Indicates if the spot has a charger.
+          example: true
+      example:
+        address: "123 Main St, Cityville"
+        charger: true
+        vehicle_type: car
+        id: 1
+        type: garage
+    Reservation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the reservation.
+          example: 101
+        spot:
+          type: integer
+          description: ID of the parking spot being reserved.
+          example: 1
+        start_datetime:
+          type: string
+          description: Start date and time of the reservation.
+          format: date-time
+          example: 2024-11-19T10:00:00Z
+        end_datetime:
+          type: string
+          description: End date and time of the reservation.
+          format: date-time
+          example: 2024-11-19T12:00:00Z
+      example:
+        start_datetime: 2024-11-19T10:00:00Z
+        end_datetime: 2024-11-19T12:00:00Z
+        spot: 1
+        id: 101

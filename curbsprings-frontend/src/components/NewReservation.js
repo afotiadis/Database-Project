@@ -1,0 +1,52 @@
+
+import React, { useState } from 'react';
+
+function NewReservation() {
+  const [spot, setSpot] = useState('');
+  const [startDatetime, setStartDatetime] = useState('');
+  const [endDatetime, setEndDatetime] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newReservation = {
+      spot: parseInt(spot),
+      start_datetime: startDatetime,
+      end_datetime: endDatetime,
+    };
+
+    fetch('http://localhost:8080/reservation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newReservation),
+    })
+      .then((response) => {
+        if (response.status === 201) return response.json();
+        throw new Error('Failed to create reservation');
+      })
+      .then((data) => alert(`Reservation created: ${JSON.stringify(data)}`))
+      .catch((error) => console.error('Error:', error));
+  };
+
+  return (
+    <div>
+      <h1 className="text-center mb-4">New Reservation</h1>
+      <form className="bg-dark p-4 text-white rounded" onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="spot" className="form-label">Spot ID:</label>
+          <input type="number" className="form-control" id="spot" placeholder="Enter Spot ID" value={spot} onChange={(e) => setSpot(e.target.value)} required />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="startDatetime" className="form-label">Start DateTime:</label>
+          <input type="datetime-local" className="form-control" id="startDatetime"  onFocus={(e) => e.target.showPicker()} value={startDatetime} onChange={(e) => setStartDatetime(e.target.value)} required/>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="endDatetime" className="form-label">End DateTime:</label>
+          <input type="datetime-local" className="form-control" id="endDatetime"  onFocus={(e) => e.target.showPicker()} value={endDatetime} onChange={(e) => setEndDatetime(e.target.value)} required />
+        </div>
+        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Create Reservation</button>
+      </form>
+    </div>
+  );
+}
+
+export default NewReservation;
