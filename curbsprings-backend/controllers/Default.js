@@ -25,6 +25,7 @@ module.exports.reservationIdGET = function reservationIdGET (req, res, next) {
 };
 // TODO: This function does not work
 module.exports.reservationPOST = function reservationPOST (req, res, next, body) {
+  console.log(body);
   Default.reservationPOST(body)
     .then(function (response) {
       utils.writeJson(res, response);

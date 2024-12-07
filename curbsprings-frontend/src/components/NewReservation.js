@@ -17,10 +17,16 @@ function NewReservation() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const formatToSQLDatetime = (datetime) => {
+      const date = new Date(datetime);
+      return date.toISOString().slice(0, 19).replace('T', ' ');
+    };
+
     const newReservation = {
       spot: parseInt(spot),
-      start_datetime: startDatetime,
-      end_datetime: endDatetime,
+      start_datetime: formatToSQLDatetime(startDatetime),
+      end_datetime: formatToSQLDatetime(endDatetime),
       license_plate: licensePlate,
     };
 

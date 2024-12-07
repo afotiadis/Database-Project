@@ -63,7 +63,7 @@ exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id N
     const query = 'INSERT INTO reservation (user_id, spot_id, license_plate, start_time, end_time, status) VALUES (?, 1, ?, ?, ?, \'Reserved\')';
     // All reservations are made by user 1 for now
     const params = [reservation.spot_id, reservation.license_plate, reservation.start_time, reservation.end_time];
-
+    
     pool.query(query, params, function(error, results, fields) {
       if (error) {
         console.error('Database query error:', error); // Log the error
