@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Spot() {
     const { id } = useParams(); // Get the spot ID from the URL
     const [spot, setSpot] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:8080/spot/${id}`)
@@ -52,7 +51,7 @@ function Spot() {
                         <div className="col-12 text-center">
                             <button
                                 className="btn btn-light btn-lg"
-                                onClick={() => navigate('/new-reservation')}
+                                onClick={() => window.location.href = `/new-reservation?spot_id=${spot.spot_id}`}
                             >
                                <strong> Make a Reservation</strong>
                             </button>

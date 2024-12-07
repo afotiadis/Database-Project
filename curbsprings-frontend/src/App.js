@@ -8,7 +8,7 @@ import Reservation from './components/Reservation';
 import './styles/custom.scss';
 
 function App() {
-  const [activeLink, setActiveLink] = React.useState('/');
+  const [activeLink, setActiveLink] = React.useState(window.location.pathname);
 
   return (
     <Router>
@@ -29,7 +29,7 @@ function App() {
             <li className="nav-item mb-3">
               <Link 
                 to="/reservations" 
-                className={`nav-link ${activeLink.includes('/reservations') ? 'bg-secondary text-dark' : 'bg-primary text-light'} text-center fw-bold`}
+                className={`nav-link ${activeLink === '/reservations' ? 'bg-secondary text-dark' : 'bg-primary text-light'} text-center fw-bold`}
                 onClick={() => setActiveLink('/reservations')}
               >
                 Reservations
@@ -61,3 +61,4 @@ function App() {
 }
 
 export default App;
+
