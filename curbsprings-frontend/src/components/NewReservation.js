@@ -1,10 +1,18 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function NewReservation() {
   const [spot, setSpot] = useState('');
   const [startDatetime, setStartDatetime] = useState('');
   const [endDatetime, setEndDatetime] = useState('');
+  
+  // If attribute spot_id is present in the URL, set the spot state
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const spotId = params.get('spot_id');
+    if (spotId) {
+      setSpot(spotId);
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

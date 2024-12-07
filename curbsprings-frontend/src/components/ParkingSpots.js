@@ -12,7 +12,7 @@ function ParkingSpots() {
       .then((data) => setSpots(data))
       .catch((error) => console.error('Error fetching parking spots:', error));
   }, []);
-  console.log(spots);
+    
   const showTooltip = (imgRef) => {
     if (tooltipRef.current) {
       currentImgRef.current = imgRef; // Set the current image reference
