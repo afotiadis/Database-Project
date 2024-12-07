@@ -46,20 +46,25 @@ function ParkingSpots() {
         {spots.map((spot) => (
           <div className="col-md-4 mb-4 shadow-m" key={spot.id}>
             <div
-              className="card bg-primary text-white position-relative"
-              style={{ height: '11rem', transition: 'transform 0.3s' }}
+              className={`card ${spot.available ? 'bg-primary' : 'bg-secondary'} text-white position-relative`}
+              style={{
+                height: '11rem',
+                transition: 'transform 0.3s',
+                opacity: spot.available ? 1 : 0.5,
+                pointerEvents: spot.available ? 'auto' : 'none', // Make it unclickable if not available
+              }}
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
               <div className="card-body d-flex flex-column"
-                onClick={() => window.location.href = `/spot/${spot.spot_id}`}>
+                onClick={() => spot.available && (window.location.href = `/spot/${spot.spot_id}`)}>
                 <h5 className="card-title">{spot.address}</h5>
                 <p className="card-text">Spot ID: {spot.spot_id}</p>
                 <p className="card-text">
                   <strong>Type:</strong> {spot.type}
                 </p>
                 <p className="card-text">
-                  <strong>Vehicles supported:</strong> No info
+                  <strong>Spot available:</strong> {spot.available ? 'Yes' : 'No'}
                 </p>
                 {spot.has_charger ? (
                   <>

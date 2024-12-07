@@ -29,7 +29,7 @@ function App() {
             <li className="nav-item mb-3">
               <Link 
                 to="/reservations" 
-                className={`nav-link ${activeLink.startsWith('/reservations') ? 'bg-secondary text-dark' : 'bg-primary text-light'} text-center fw-bold`}
+                className={`nav-link ${activeLink.includes('/reservations') ? 'bg-secondary text-dark' : 'bg-primary text-light'} text-center fw-bold`}
                 onClick={() => setActiveLink('/reservations')}
               >
                 Reservations

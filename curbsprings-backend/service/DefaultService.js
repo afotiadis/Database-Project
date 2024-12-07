@@ -86,7 +86,7 @@ exports.reservationPOST = function(reservation) { // TODO: This function does no
  **/
 exports.spotGET = function() {
   return new Promise(function(resolve, reject) {
-    pool.query('SELECT spot_id,address,type,has_charger FROM parkingspot', function(error, results, fields) {
+    pool.query('SELECT spot_id,address,type,has_charger,available FROM parkingspot', function(error, results, fields) {
       if (error) {
         reject(error);
       } else {
