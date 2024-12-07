@@ -4,6 +4,7 @@ function NewReservation() {
   const [spot, setSpot] = useState('');
   const [startDatetime, setStartDatetime] = useState('');
   const [endDatetime, setEndDatetime] = useState('');
+  const [licensePlate, setLicensePlate] = useState('');
   
   // If attribute spot_id is present in the URL, set the spot state
   useEffect(() => {
@@ -20,6 +21,7 @@ function NewReservation() {
       spot: parseInt(spot),
       start_datetime: startDatetime,
       end_datetime: endDatetime,
+      license_plate: licensePlate,
     };
 
     fetch('http://localhost:8080/reservation', {
@@ -45,11 +47,15 @@ function NewReservation() {
         </div>
         <div className="mb-3">
           <label htmlFor="startDatetime" className="form-label">Start DateTime:</label>
-          <input type="datetime-local" className="form-control" id="startDatetime"  onFocus={(e) => e.target.showPicker()} value={startDatetime} onChange={(e) => setStartDatetime(e.target.value)} required/>
+          <input type="datetime-local" className="form-control" id="startDatetime" onFocus={(e) => e.target.showPicker()} value={startDatetime} onChange={(e) => setStartDatetime(e.target.value)} required />
         </div>
         <div className="mb-3">
           <label htmlFor="endDatetime" className="form-label">End DateTime:</label>
-          <input type="datetime-local" className="form-control" id="endDatetime"  onFocus={(e) => e.target.showPicker()} value={endDatetime} onChange={(e) => setEndDatetime(e.target.value)} required />
+          <input type="datetime-local" className="form-control" id="endDatetime" onFocus={(e) => e.target.showPicker()} value={endDatetime} onChange={(e) => setEndDatetime(e.target.value)} required />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="licensePlate" className="form-label">License Plate:</label>
+          <input type="text" className="form-control" id="licensePlate" placeholder="Enter License Plate" value={licensePlate} onChange={(e) => setLicensePlate(e.target.value)} required />
         </div>
         <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Create Reservation</button>
       </form>

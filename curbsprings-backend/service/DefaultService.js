@@ -58,10 +58,11 @@ exports.reservationIdGET = function(reservationId) {
  * reservation Object The reservation to create.
  * returns Object
  **/
-exports.reservationPOST = function(reservation) { // TODO: This function does not work
+exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id NEEDS TO BE AUTO-INCREMENTED
   return new Promise(function(resolve, reject) {
-    const query = 'INSERT INTO reservations (spot_id, user_id, start_time, end_time) VALUES (?, ?, ?, ?)';
-    const params = [reservation.spot_id, reservation.user_id, reservation.start_time, reservation.end_time];
+    const query = 'INSERT INTO reservation (user_id, spot_id, license_plate, start_time, end_time, status) VALUES (?, 1, ?, ?, ?, \'Reserved\')';
+    // All reservations are made by user 1 for now
+    const params = [reservation.spot_id, reservation.license_plate, reservation.start_time, reservation.end_time];
 
     pool.query(query, params, function(error, results, fields) {
       if (error) {
