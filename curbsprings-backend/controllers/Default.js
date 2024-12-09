@@ -27,7 +27,7 @@ module.exports.reservationIdGET = function reservationIdGET (req, res, next) {
 module.exports.reservationPOST = function reservationPOST (req, res, next) {
   Default.reservationPOST(req.body)
     .then(function (response) {
-      utils.writeJson(res, response);
+      res.status(201).json(response); // Created
     })
     .catch(function (error) {
       res.status(error.statusCode).json({ error: error.message });

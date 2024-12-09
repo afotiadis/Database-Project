@@ -5,7 +5,8 @@ function NewReservation() {
   const [startDatetime, setStartDatetime] = useState('');
   const [endDatetime, setEndDatetime] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
-  
+  const defaultLicensePlate = 'ΚΒΧ5686';
+
   // If attribute spot_id is present in the URL, set the spot state
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -18,17 +19,23 @@ function NewReservation() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
+    // Format datetime to SQL datetime format
     const formatToSQLDatetime = (datetime) => {
       const date = new Date(datetime);
       return date.toISOString().slice(0, 19).replace('T', ' ');
     };
 
+    // If licensePlate is empty, use defaultLicensePlate
+    const finalLicensePlate = licensePlate || defaultLicensePlate;
+    
     const newReservation = {
-      spot: parseInt(spot),
-      start_datetime: formatToSQLDatetime(startDatetime),
-      end_datetime: formatToSQLDatetime(endDatetime),
-      license_plate: licensePlate,
+      spot_id: parseInt(spot),
+      license_plate: finalLicensePlate,
+      start_time: formatToSQLDatetime(startDatetime),
+      end_time: formatToSQLDatetime(endDatetime)
     };
+
+    console.log(newReservation);
 
     fetch('http://localhost:8080/reservation', {
       method: 'POST',
@@ -36,6 +43,7 @@ function NewReservation() {
       body: JSON.stringify(newReservation),
     })
       .then((response) => {
+        console.log(response);
         if (response.status === 201) return response.json();
         throw new Error('Failed to create reservation');
       })
@@ -61,7 +69,7 @@ function NewReservation() {
         </div>
         <div className="mb-3">
           <label htmlFor="licensePlate" className="form-label">License Plate:</label>
-          <input type="text" className="form-control" id="licensePlate" placeholder="Enter License Plate" value={licensePlate} onChange={(e) => setLicensePlate(e.target.value)} required />
+          <input type="text" className="form-control" id="licensePlate" placeholder="Enter License Plate" value={licensePlate || defaultLicensePlate} onChange={(e) => setLicensePlate(e.target.value)} required />
         </div>
         <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Create Reservation</button>
       </form>
