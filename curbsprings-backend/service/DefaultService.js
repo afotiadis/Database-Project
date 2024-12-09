@@ -22,6 +22,7 @@ exports.reservationGET = function() {
     pool.query('SELECT reservation_id,start_time,end_time,status,address FROM reservation JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id', function(error, results, fields) {
       if (error) {
         console.error('Database query error:', error); // Log the error
+        error.statusCode = 500; // Internal Server Error
         reject(error);
       } else {
         resolve(results);
@@ -59,6 +60,7 @@ exports.reservationIdGET = function(reservationId) {
     pool.query(query, params, function(error, results, fields) {
       if (error) {
         console.error('Database query error:', error); // Log the error
+        error.statusCode = 500; // Internal Server Error
         reject(error);
       } else {
         resolve(results[0]);
@@ -101,6 +103,7 @@ exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id N
     pool.query(query, params, function(error, results, fields) {
       if (error) {
         console.error('Database query error:', error); // Log the error
+        error.statusCode = 500; // Internal Server Error
         reject(error);
       } else {
         resolve({ id: results.insertId, ...reservation });
@@ -123,6 +126,7 @@ exports.spotGET = function() {
   return new Promise(function(resolve, reject) {
     pool.query('SELECT spot_id,address,type,has_charger,available FROM parkingspot', function(error, results, fields) {
       if (error) {
+        error.statusCode = 500; // Internal Server Error
         reject(error);
       } else {
         resolve(results);
@@ -158,6 +162,7 @@ exports.spotIdGET = function(id) {
     const params = [id];
     pool.query(query, params, function(error, results, fields) {
       if (error) {
+        error.statusCode = 500; // Internal Server Error
       reject(error);
       } else {
       resolve(results[0]);
