@@ -31,8 +31,17 @@ app.get('/reservation', DefaultController.reservationGET);
 app.post('/reservation', DefaultController.reservationPOST);
 app.get('/reservation/:id', DefaultController.reservationIdGET);
 
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500; // Default to 500 Internal Server Error
+    const message = err.message || 'Internal Server Error';
+    console.error(`[ERROR] ${statusCode} - ${message}`);
+    res.status(statusCode).json({ error: message });
+});
+
 // Start server
 app.listen(serverPort, () => {
     console.log(`Your server is listening on port ${serverPort} (http://localhost:${serverPort})`);
     console.log(`Swagger-ui is available on http://localhost:${serverPort}/docs`);
 });
+

@@ -154,22 +154,32 @@ components:
           type: integer
           description: Unique identifier for the reservation.
           example: 101
-        spot:
+        spot_id:
           type: integer
           description: ID of the parking spot being reserved.
           example: 1
-        start_datetime:
+        license_plate:
+          type: string
+          description: License plate number of the reserving vehicle.
+          example: "ABC1234"
+        start_time:
           type: string
           description: Start date and time of the reservation.
           format: date-time
           example: 2024-11-19T10:00:00Z
-        end_datetime:
+        end_time:
           type: string
           description: End date and time of the reservation.
           format: date-time
           example: 2024-11-19T12:00:00Z
+        status:
+          type: string
+          description: Current status of the reservation.
+          example: "Reserved"
       example:
-        start_datetime: 2024-11-19T10:00:00Z
-        end_datetime: 2024-11-19T12:00:00Z
-        spot: 1
-        id: 101
+        spot_id: 1
+        license_plate: "ABC1234"
+        start_time: 2024-11-19T10:00:00Z
+        end_time: 2024-11-19T12:00:00Z
+        status: "Reserved"
+

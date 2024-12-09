@@ -8,8 +8,8 @@ module.exports.reservationGET = function reservationGET (req, res, next) {
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
+    .catch(function (error) {
+      res.status(error.statusCode).json({ error: error.message });
     });
 };
 
@@ -19,19 +19,18 @@ module.exports.reservationIdGET = function reservationIdGET (req, res, next) {
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
+    .catch(function (error) {
+      res.status(error.statusCode).json({ error: error.message });
     });
 };
-// TODO: This function does not work
-module.exports.reservationPOST = function reservationPOST (req, res, next, body) {
-  console.log(body);
-  Default.reservationPOST(body)
+
+module.exports.reservationPOST = function reservationPOST (req, res, next) {
+  Default.reservationPOST(req.body)
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
+    .catch(function (error) {
+      res.status(error.statusCode).json({ error: error.message });
     });
 };
 
@@ -40,8 +39,8 @@ module.exports.spotGET = function spotGET (req, res, next) {
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
+    .catch(function (error) {
+      res.status(error.statusCode).json({ error: error.message });
     });
 };
 
@@ -51,7 +50,7 @@ module.exports.spotIdGET = function spotIdGET (req, res, next) {
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
+    .catch(function (error) {
+      res.status(error.statusCode).json({ error: error.message });
     });
 };

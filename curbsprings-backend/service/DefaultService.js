@@ -1,6 +1,7 @@
 'use strict';
 
 const mysql = require('mysql2');
+const Joi = require('joi');
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: 'localhost',
@@ -17,6 +18,25 @@ const pool = mysql.createPool({
  **/
 exports.reservationGET = function() {
   return new Promise(function(resolve, reject) {
+    
+    // Define the schema for validation
+    const schema = Joi.object({
+      spot_id: Joi.number().integer().required(),
+      license_plate: Joi.string().required(),
+      start_time: Joi.string().isoDate().required(),
+      end_time: Joi.string().isoDate().required()
+    });
+
+    // Validate the input data
+    const { error } = schema.validate(reservation);
+    if (error) {
+      const validationError = new Error('Fetching reservations failed: Invalid input data.');
+      validationError.statusCode = 400; // Bad Request
+      reject(validationError);
+      return;
+    }
+    
+    // Query the database
     pool.query('SELECT reservation_id,start_time,end_time,status,address FROM reservation JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id', function(error, results, fields) {
       if (error) {
         console.error('Database query error:', error); // Log the error
@@ -37,6 +57,20 @@ exports.reservationGET = function() {
  **/
 exports.reservationIdGET = function(reservationId) {
   return new Promise(function(resolve, reject) {
+
+    // Define the schema for validation
+    const schema = Joi.number().integer().required();
+
+    // Validate the input data
+    const { error } = schema.validate(reservationId);
+    if (error) {
+      const validationError = new Error('Fetching reservation failed: Invalid reservation ID.');
+      validationError.statusCode = 400; // Bad Request
+      reject(validationError);
+      return;
+    }
+
+    // Query the database
     const query = 'SELECT reservation_id,start_time,end_time,status,address FROM reservation JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id WHERE reservation_id = ?';
     const params = [reservationId];
 
@@ -60,7 +94,25 @@ exports.reservationIdGET = function(reservationId) {
  **/
 exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id NEEDS TO BE AUTO-INCREMENTED
   return new Promise(function(resolve, reject) {
-    const query = 'INSERT INTO reservation (user_id, spot_id, license_plate, start_time, end_time, status) VALUES (?, 1, ?, ?, ?, \'Reserved\')';
+
+    // Define the schema for validation
+    const schema = Joi.object({
+      spot_id: Joi.number().integer().required(),
+      license_plate: Joi.string().required(),
+      start_time: Joi.string().isoDate().required(),
+      end_time: Joi.string().isoDate().required()
+    });
+
+    // Validate the input data
+    const { error } = schema.validate(reservation);
+    if (error) {
+      const validationError = new Error('Creating reservation failed: Invalid input data.');
+      validationError.statusCode = 400; // Bad Request
+      reject(validationError);
+      return;
+    }
+
+    const query = 'INSERT INTO reservation (user_id, spot_id, license_plate, start_time, end_time, status) VALUES (1, ?, ?, ?, ?, \'Reserved\')';
     // All reservations are made by user 1 for now
     const params = [reservation.spot_id, reservation.license_plate, reservation.start_time, reservation.end_time];
     
@@ -106,6 +158,20 @@ exports.spotGET = function() {
  **/
 exports.spotIdGET = function(id) {
   return new Promise(function(resolve, reject) {
+
+    // Define the schema for validation
+    const schema = Joi.number().integer().required();
+
+    // Validate the input data
+    const { error } = schema.validate(id);
+    if (error) {
+      const validationError = new Error('Fetching spot failed: Invalid spot ID.');
+      validationError.statusCode = 400; // Bad Request
+      reject(validationError);
+      return;
+    }
+
+    // Query the database
     const query = 'SELECT spot_id,address,type,has_charger FROM parkingspot WHERE spot_id = ?';
     const params = [id];
     pool.query(query, params, function(error, results, fields) {
