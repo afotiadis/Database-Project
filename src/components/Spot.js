@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+
 function Spot() {
     const { id } = useParams(); // Get the spot ID from the URL
     const [spot, setSpot] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/spot/${id}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/spot/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch the spot details');

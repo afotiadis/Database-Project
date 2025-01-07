@@ -1,11 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
+
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/reservation')
+    fetch(`${process.env.REACT_APP_SERVER_URL}/reservation`)
       .then((response) => response.json())
       .then((data) => setReservations(data))
       .catch((error) => console.error('Error fetching reservations:', error));

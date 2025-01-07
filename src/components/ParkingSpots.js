@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createPopper } from '@popperjs/core';
 
+
 function ParkingSpots() {
   const [spots, setSpots] = useState([]);
   const tooltipRef = useRef(null); // Tooltip reference
   const currentImgRef = useRef(null); // Reference to the currently hovered image
 
   useEffect(() => {
-    fetch('http://localhost:8080/spot')
+    fetch(`${process.env.REACT_APP_SERVER_URL}/spot`)
       .then((response) => response.json())
       .then((data) => setSpots(data))
       .catch((error) => console.error('Error fetching parking spots:', error));

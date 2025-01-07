@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+
 function Reservation() {
     const { id } = useParams(); // Get the reservation ID from the URL
     const [reservation, setReservation] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/reservation/${id}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/reservation/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch the reservation details');

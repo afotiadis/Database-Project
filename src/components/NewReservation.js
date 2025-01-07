@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 function NewReservation() {
   const [spot, setSpot] = useState('');
   const [startDatetime, setStartDatetime] = useState('');
@@ -37,7 +38,7 @@ function NewReservation() {
 
     console.log(newReservation);
 
-    fetch('http://localhost:8080/reservation', {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newReservation),
