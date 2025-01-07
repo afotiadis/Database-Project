@@ -5,7 +5,7 @@ function NewReservation() {
   const [startDatetime, setStartDatetime] = useState('');
   const [endDatetime, setEndDatetime] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
-  const defaultLicensePlate = 'ΚΒΧ5686';
+  const defaultLicensePlate = 'KBX5686';
 
   // If attribute spot_id is present in the URL, set the spot state
   useEffect(() => {

@@ -1,14 +1,46 @@
 'use strict';
 
-const mysql = require('mysql2');
+require('dotenv').config();
+// const mysql = require('mysql2');
+const sql = require('mssql');
 const Joi = require('joi');
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: 'thanasis',
-  database: 'curbspringsdb'
-});
+
+// const pool = mysql.createPool({
+//   connectionLimit: 10,
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'thanasis',
+//   database: 'curbspringsdb'
+// });
+
+// MSSQL configuration
+const config = {
+  user: process.env.DB_USER, // Azure SQL username
+  password: process.env.DB_PASSWORD, // Azure SQL password
+  server: process.env.DB_SERVER, // Azure SQL server
+  database: process.env.DB_DATABASE, // Database name
+  options: {
+    encrypt: true, // For Azure SQL, encryption is required
+    enableArithAbort: true
+  },
+  pool: {
+    max: 10,
+    min: 0,
+    idleTimeoutMillis: 30000
+  }
+};
+
+// Create a pool instance
+const poolPromise = new sql.ConnectionPool(config)
+  .connect()
+  .then(pool => {
+    console.log('Connected to MSSQL');
+    return pool;
+  })
+  .catch(err => {
+    console.error('Database connection failed!', err);
+    throw err;
+  });
 
 /**
  * Get all reservations
@@ -16,18 +48,23 @@ const pool = mysql.createPool({
  *
  * returns List
  **/
-exports.reservationGET = function() {
-  return new Promise(function(resolve, reject) {
-    // Query the database
-    pool.query('SELECT reservation_id,start_time,end_time,status,address FROM reservation JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id', function(error, results, fields) {
-      if (error) {
-        console.error('Database query error:', error); // Log the error
-        error.statusCode = 500; // Internal Server Error
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
+exports.reservationGET = function () {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .query(
+          `SELECT reservation_id, start_time, end_time, status, address 
+           FROM reservation 
+           JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id`
+        );
+      resolve(result.recordset);
+    } catch (error) {
+      console.error('Database query error:', error);
+      error.statusCode = 500; // Internal Server Error
+      reject(error);
+    }
   });
 };
 
@@ -38,34 +75,37 @@ exports.reservationGET = function() {
  * reservationId Long The ID of the reservation to retrieve.
  * returns Object
  **/
-exports.reservationIdGET = function(reservationId) {
-  return new Promise(function(resolve, reject) {
-
-    // Define the schema for validation
+exports.reservationIdGET = function (reservationId) {
+  return new Promise(async (resolve, reject) => {
     const schema = Joi.number().integer().required();
-
-    // Validate the input data
     const { error } = schema.validate(reservationId);
+
     if (error) {
-      const validationError = new Error('Fetching reservation failed: Invalid reservation ID.');
+      const validationError = new Error(
+        'Fetching reservation failed: Invalid reservation ID.'
+      );
       validationError.statusCode = 400; // Bad Request
       reject(validationError);
       return;
     }
 
-    // Query the database
-    const query = 'SELECT reservation_id,start_time,end_time,status,address FROM reservation JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id WHERE reservation_id = ?';
-    const params = [reservationId];
-
-    pool.query(query, params, function(error, results, fields) {
-      if (error) {
-        console.error('Database query error:', error); // Log the error
-        error.statusCode = 500; // Internal Server Error
-        reject(error);
-      } else {
-        resolve(results[0]);
-      }
-    });
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input('reservationId', sql.Int, reservationId)
+        .query(
+          `SELECT reservation_id, start_time, end_time, status, address 
+           FROM reservation 
+           JOIN parkingspot ON reservation.spot_id = parkingspot.spot_id 
+           WHERE reservation_id = @reservationId`
+        );
+      resolve(result.recordset[0]);
+    } catch (error) {
+      console.error('Database query error:', error);
+      error.statusCode = 500; // Internal Server Error
+      reject(error);
+    }
   });
 };
 
@@ -76,10 +116,8 @@ exports.reservationIdGET = function(reservationId) {
  * reservation Object The reservation to create.
  * returns Object
  **/
-exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id NEEDS TO BE AUTO-INCREMENTED
-  return new Promise(function(resolve, reject) {
-
-    // Define the schema for validation
+exports.reservationPOST = function (reservation) {
+  return new Promise(async (resolve, reject) => {
     const schema = Joi.object({
       spot_id: Joi.number().integer().required(),
       license_plate: Joi.string().required(),
@@ -87,28 +125,36 @@ exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id N
       end_time: Joi.string().isoDate().required()
     });
 
-    // Validate the input data
     const { error } = schema.validate(reservation);
+
     if (error) {
-      const validationError = new Error('Creating reservation failed: Invalid input data.');
+      const validationError = new Error(
+        'Creating reservation failed: Invalid input data.'
+      );
       validationError.statusCode = 400; // Bad Request
       reject(validationError);
       return;
     }
 
-    const query = 'INSERT INTO reservation (user_id, spot_id, license_plate, start_time, end_time, status) VALUES (1, ?, ?, ?, ?, \'Reserved\')';
-    // All reservations are made by user 1 for now
-    const params = [reservation.spot_id, reservation.license_plate, reservation.start_time, reservation.end_time];
-    
-    pool.query(query, params, function(error, results, fields) {
-      if (error) {
-        console.error('Database query error:', error); // Log the error
-        error.statusCode = 500; // Internal Server Error
-        reject(error);
-      } else {
-        resolve({ id: results.insertId, ...reservation });
-      }
-    });
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input('spot_id', sql.Int, reservation.spot_id)
+        .input('license_plate', sql.NVarChar, reservation.license_plate)
+        .input('start_time', sql.DateTime, reservation.start_time)
+        .input('end_time', sql.DateTime, reservation.end_time)
+        .query(
+          `INSERT INTO reservation (user_id, spot_id, license_plate, start_time, end_time, status) 
+           VALUES (1, @spot_id, @license_plate, @start_time, @end_time, 'Reserved');
+           SELECT SCOPE_IDENTITY() AS id;`
+        );
+      resolve({ id: result.recordset[0].id, ...reservation });
+    } catch (error) {
+      console.error('Database query error:', error);
+      error.statusCode = 500; // Internal Server Error
+      reject(error);
+    }
   });
 };
 
@@ -116,22 +162,24 @@ exports.reservationPOST = function(reservation) { // ATTENTION: reservation_id N
  * Get spots based on filters
  * Returns a list of spots based on the provided filters.
  *
- * address String Filter spots by address. (optional)
- * type String Filter spots by type. (optional)
- * vehicle_type String Filter spots by vehicle type. (optional)
- * charger Boolean Filter spots by whether they have a charger. (optional)
  * returns List
  **/
-exports.spotGET = function() {
-  return new Promise(function(resolve, reject) {
-    pool.query('SELECT spot_id,address,type,has_charger,available FROM parkingspot', function(error, results, fields) {
-      if (error) {
-        error.statusCode = 500; // Internal Server Error
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
+exports.spotGET = function () {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .query(
+          `SELECT spot_id, address, type, has_charger, available 
+           FROM parkingspot`
+        );
+      resolve(result.recordset);
+    } catch (error) {
+      console.error('Database query error:', error);
+      error.statusCode = 500; // Internal Server Error
+      reject(error);
+    }
   });
 };
 
@@ -142,43 +190,48 @@ exports.spotGET = function() {
  * id Integer The ID of the parking spot to retrieve.
  * returns Spot
  **/
-exports.spotIdGET = function(id) {
-  return new Promise(function(resolve, reject) {
-
-    // Define the schema for validation
+exports.spotIdGET = function (id) {
+  return new Promise(async (resolve, reject) => {
     const schema = Joi.number().integer().required();
-
-    // Validate the input data
     const { error } = schema.validate(id);
+
     if (error) {
-      const validationError = new Error('Fetching spot failed: Invalid spot ID.');
+      const validationError = new Error(
+        'Fetching spot failed: Invalid spot ID.'
+      );
       validationError.statusCode = 400; // Bad Request
       reject(validationError);
       return;
     }
 
-    // Query the database
-    const query = 'SELECT spot_id,address,type,has_charger FROM parkingspot WHERE spot_id = ?';
-    const params = [id];
-    pool.query(query, params, function(error, results, fields) {
-      if (error) {
-        error.statusCode = 500; // Internal Server Error
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input('id', sql.Int, id)
+        .query(
+          `SELECT spot_id, address, type, has_charger 
+           FROM parkingspot 
+           WHERE spot_id = @id`
+        );
+      resolve(result.recordset[0]);
+    } catch (error) {
+      console.error('Database query error:', error);
+      error.statusCode = 500; // Internal Server Error
       reject(error);
-      } else {
-      resolve(results[0]);
-      }
-    });
+    }
   });
-}
+};
 
 // Close the pool when the application terminates
-process.on('SIGINT', () => {
-  pool.end(err => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      console.log('Closed the database connection.');
-    }
+process.on('SIGINT', async () => {
+  try {
+    const pool = await poolPromise;
+    await pool.close();
+    console.log('Closed the database connection.');
     process.exit(0);
-  });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 });
