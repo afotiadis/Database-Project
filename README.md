@@ -1,43 +1,70 @@
-# Databases
+# Getting Started with Create React App
 
-<p align=center>
-<img src="https://github.com/user-attachments/assets/94c5e452-3848-49c3-9747-2fa77869148a" height=100px width:auto />
-  &emsp;&emsp;&emsp;&emsp;
-<img src="https://github.com/user-attachments/assets/849c5bb3-81d1-407f-b781-1eb155431d94" height=100px width:auto />
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-<img src="https://github.com/user-attachments/assets/723a41b1-ea2f-4980-bac0-a76522c758ea" height=90px width:auto />
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-<img src="https://github.com/user-attachments/assets/88d10002-5bf1-4bd6-b38c-deeee07e701e" height=90px width:auto />
-</p>
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Overview
+## Available Scripts
 
-This repository contains materials related to assignments of the Databases course of ECE, Aristotle University of Thessaloniki.
+In the project directory, you can run:
 
->Course professor: [Konstantinos Panayiotou](https://www.linkedin.com/in/konstantinos-panayiotou-b8111675/)
+### `npm start`
 
-## Deliverable 1
+Runs the app in the development mode.\
+Open [http://localhost:8080](http://localhost:8080) to view it in your browser.
 
-The first deliverable includes the design of a relational database, usign relational algebra. Based on a demo app, all 
-tables needed are created and filled with dummy data. Also, views and queries are defined.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## Deliverable 2
+### `npm test`
 
-The second deliverable includes the implementation of the DB created in deliverable 1 in MySQL.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Deliverable 3
+### `npm run build`
 
-The third deliverable includes the implementation of a Web App using the DB created in deliverable 2. A backend and frondend for the app
-are created, and the functionality of the app and DB are tested.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## The rest of the team
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- [Giorgos Pittis](https://github.com/gpittis)
-- [Alexandros Fotiadis](https://github.com/afotiadis)
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Tools 
+### `npm run eject`
 
-To implement the app, MySQL is used for the DB implementation, Node.js + Express.js for the backend server and 
-React + Bootstrap for the frontend client.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
