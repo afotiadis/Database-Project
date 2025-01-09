@@ -13,7 +13,7 @@ const DefaultController = require('./controllers/Default');
 const openapiSpec = yaml.load(fs.readFileSync(path.join(__dirname, 'api/openapi.yaml'), 'utf8'));
 
 const app = express();
-const serverPort = 8080;
+const serverPort = process.env.PORT || 8080;
 
 // Enable CORS
 app.use(cors());
