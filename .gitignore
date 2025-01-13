@@ -1,1 +1,17 @@
-node_modules
+# Libraries
+/node_modules
+
+# Frontend
+/build
+/public
+/src
+
+# Environment variables
+#.env
+
+# Backend
+.swagger-codegen
+/controllers
+/service
+/utils
+/api

@@ -1,43 +1,34 @@
-# Databases
+# Webapp Local Installation Instructions
 
-<p align=center>
-<img src="https://github.com/user-attachments/assets/94c5e452-3848-49c3-9747-2fa77869148a" height=100px width:auto />
-  &emsp;&emsp;&emsp;&emsp;
-<img src="https://github.com/user-attachments/assets/849c5bb3-81d1-407f-b781-1eb155431d94" height=100px width:auto />
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-<img src="https://github.com/user-attachments/assets/723a41b1-ea2f-4980-bac0-a76522c758ea" height=90px width:auto />
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-<img src="https://github.com/user-attachments/assets/88d10002-5bf1-4bd6-b38c-deeee07e701e" height=90px width:auto />
-</p>
+## Prerequisites
 
-## Overview
+- Node (v20)
+- MySQL
 
-This repository contains materials related to assignments of the Databases course of ECE, Aristotle University of Thessaloniki.
+## Database
 
->Course professor: [Konstantinos Panayiotou](https://www.linkedin.com/in/konstantinos-panayiotou-b8111675/)
+First, load the MySQL database using the dump provided in the deliverable files. This is needed to have the dummy data available.
 
-## Deliverable 1
+## Backend
 
-The first deliverable includes the design of a relational database, usign relational algebra. Based on a demo app, all 
-tables needed are created and filled with dummy data. Also, views and queries are defined.
+Initialize the backend server, by going to the **curbsprings-backend** folder, opening a command line and running 
+```npm start```. This will install all needed libraries and start the server, which should listen to http://localhost:8000
 
-## Deliverable 2
+**Attention**: You might need to modify the mysql2 package password inside Service/DefaultService.js to successfully connect tha DB with
+the backend.
 
-The second deliverable includes the implementation of the DB created in deliverable 1 in MySQL.
+## Frontend
 
-## Deliverable 3
+Initialize the frontend by running at first ```npm install``` to install all needed libraries.
 
-The third deliverable includes the implementation of a Web App using the DB created in deliverable 2. A backend and frondend for the app
-are created, and the functionality of the app and DB are tested.
+ **Attention**:The frontend is based on the React framework, and installation might take a long time.
 
-## The rest of the team
+After installation is complete, run ```npm start``` and wait for the frontend to start. After starting, you can visit http://localhost:3000
+within a browser to access the app.
 
-- [Giorgos Pittis](https://github.com/gpittis)
-- [Alexandros Fotiadis](https://github.com/afotiadis)
+# ! DISCLAIMER !
 
-## Tools 
+This app was developed for the thrid deliverable of Databases Course, Aristotle University 2024.
 
-To implement the app, MySQL is used for the DB implementation, Node.js + Express.js for the backend server and 
-React + Bootstrap for the frontend client.
-
+This is an app developed in a very short time period, and is untested and **might stop working at any time**.
 
