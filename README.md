@@ -40,4 +40,13 @@ are created, and the functionality of the app and DB are tested.
 To implement the app, MySQL is used for the DB implementation, Node.js + Express.js for the backend server and 
 React + Bootstrap for the frontend client.
 
+## Repo structure
+
+- **main**: Contains all docs and deliverables, except code files for deliverable 3
+
+- **webapp**: Contains files for installing and running the app locally
+
+- **curbsprings_backend**: Contains backend files deployed to Render 
+
+- **curbsprings_frontend**: Contains frontend files deployed to Netlify
 

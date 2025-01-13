@@ -1,3 +1,21 @@
+# Libraries
 **/node_modules/
+
+# Environment variables
 .env
+
+# Webapp folders
+**/curbsprings-frontend/
+**/curbsprings-backend/
+
+# Backend folders
+.swagger-codegen/
+/api
+/service
+/utils
+/controllers
+
+# Frontend folders
+/src   
+/public
 **/.netlify/
