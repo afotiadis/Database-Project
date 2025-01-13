@@ -7,7 +7,7 @@
 /src
 
 # Environment variables
-#.env
+.env
 
 # Backend
 .swagger-codegen
