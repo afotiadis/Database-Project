@@ -23,3 +23,10 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Backend files and folders
+.swagger-codegen
+/api
+/controllers
+/service
+/utils
