@@ -22,4 +22,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# local env files
 .env
+
+# Deliverable folders
+/Deliverable 1
+/Deliverable 2
+/Deliverable 3
+
+# React folders
+/public
+/src
