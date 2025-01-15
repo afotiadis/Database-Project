@@ -30,17 +30,37 @@ const config = {
   }
 };
 
+async function connectWithRetry(config, maxRetries = 15, retryInterval = 10000) {
+  let retries = 0;
+  while (true) {
+    try {
+      const pool = await new sql.ConnectionPool(config).connect();
+      console.log('Connected to MSSQL');
+      return pool;
+    } catch (err) {
+      retries++;
+      console.error(`Database connection failed! Attempt ${retries}.`, `Error code:`, err.code);
+
+      if (retries >= maxRetries) {
+        console.error('Maximum retry attempts reached. Exiting.');
+        throw err;
+      }
+
+      console.log(`Retrying to connect in ${retryInterval / 1000} seconds...`);
+      await new Promise(resolve => setTimeout(resolve, retryInterval));
+    }
+  }
+}
+
 // Create a pool instance
-const poolPromise = new sql.ConnectionPool(config)
-  .connect()
-  .then(pool => {
-    console.log('Connected to MSSQL');
-    return pool;
-  })
-  .catch(err => {
-    console.error('Database connection failed!', err);
-    throw err;
-  });
+const poolPromise = connectWithRetry(config)
+.then(pool => {
+  // Use the pool instance for queries
+  console.log('Pool ready for use');
+})
+.catch(err => {
+  console.error('Failed to connect to database after retries:', err);
+});
 
 /**
  * Get all reservations
