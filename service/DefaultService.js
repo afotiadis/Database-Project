@@ -39,7 +39,7 @@ async function connectWithRetry(config, maxRetries = 15, retryInterval = 10000) 
       return pool;
     } catch (err) {
       retries++;
-      console.error(`Database connection failed! Attempt ${retries}.`, `Error code:`, err.code);
+      console.error(`Database connection failed! Attempt ${retries}.\n`, err);
 
       if (retries >= maxRetries) {
         console.error('Maximum retry attempts reached. Exiting.');
@@ -52,15 +52,8 @@ async function connectWithRetry(config, maxRetries = 15, retryInterval = 10000) 
   }
 }
 
-// Create a pool instance
-const poolPromise = connectWithRetry(config)
-.then(pool => {
-  // Use the pool instance for queries
-  console.log('Pool ready for use');
-})
-.catch(err => {
-  console.error('Failed to connect to database after retries:', err);
-});
+// Create a pool promise
+const poolPromise = connectWithRetry(config);
 
 /**
  * Get all reservations
