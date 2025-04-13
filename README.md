@@ -33,8 +33,8 @@ are created, and the functionality of the app and DB are tested.
 ## The rest of the team
 
 - [Giorgos Pittis](https://github.com/gpittis)
-- [Alexandros Fotiadis](https://github.com/afotiadis)
-
+- [Thanasis Tsarnadelis](https://github.com/tsarnadelis)
+Original Repo [Here](https://github.com/tsarnadelis/Database-Project)
 ## Tools 
 
 To implement the app, MySQL is used for the DB implementation, Node.js + Express.js for the backend server and 
