@@ -34,6 +34,7 @@ are created, and the functionality of the app and DB are tested.
 
 - [Giorgos Pittis](https://github.com/gpittis)
 - [Thanasis Tsarnadelis](https://github.com/tsarnadelis)
+
 Original Repo [Here](https://github.com/tsarnadelis/Database-Project)
 ## Tools 
 
